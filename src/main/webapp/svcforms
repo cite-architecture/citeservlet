@@ -1,0 +1,97 @@
+import edu.holycross.shot.sparqlimg.CiteImage
+
+String sparql = "@sparqls@"
+String fcgi =  "@iipsrv@"
+
+String demoImage = "@demoImage@"
+String demoObject = "@demoObject@"
+String demoText = "@demoText@"
+
+CiteImage citeimg = new CiteImage(sparql, fcgi)
+
+String svcReply = citeimg.getSparqlReply("application/json", citeimg.qg.summarizeGroupsQuery())
+def slurper = new groovy.json.JsonSlurper()
+def imgReply = slurper.parseText(svcReply)
+
+
+html.html {
+    head {
+        title("@projectlabel@: lookup by URN")
+		link(type : "text/css", rel : "stylesheet", href : "css/normalize.css", title : "CSS stylesheet")
+		link(type : "text/css", rel : "stylesheet", href : "css/steely.css", title : "CSS stylesheet")
+    }
+    
+    body {
+    
+    	header {
+            nav (role : "navigation") {
+                mkp.yield "CITE services: "
+                a(href : 'home', "Home")
+            }
+            h1("@projectlabel@: lookup by URN")
+    	}
+    	
+    	article {
+            
+            h2("Examples: find links")
+            p("Find links to...")
+
+	    p("an image:")
+            form (action : "@indices@", method : "get") {
+
+                input (type : "text", name : "urn", value : demoImage, size: "60")
+
+                input (type : "submit", value : "Find links")
+            }
+
+	    p("a text:")
+            form (action : "@indices@", method : "get") {
+
+                input (type : "text", name : "urn", value : demoText, size: "60")
+
+                input (type : "submit", value : "Find links")
+            }
+
+	    p("other objects:")
+            form (action : "@indices@", method : "get") {
+
+                input (type : "text", name : "urn", value : demoObject, size: "60")
+
+                input (type : "submit", value : "Find links")
+            }
+
+
+
+            h2("Examples: see details")
+            p("See details about...")
+
+            p("an image:")
+            form (action : "@images@", method : "get") {
+                input (type : "hidden", name : "request", value : "GetImagePlus")
+
+                input (type : "text", name : "urn", value : demoImage, size: "60")
+
+                input (type : "submit", value : "Get image")
+            }
+
+            p("a text:")
+            form (action : "@texts@", method : "get") {
+                input (type : "hidden", name : "request", value : "GetPassagePlus")
+
+                input (type : "text", name : "urn", value : demoText, size: "60")
+
+                input (type : "submit", value : "Get passage")
+            }
+
+            p("other objects:")
+            form (action : "@collections@", method : "get") {
+                input (type : "hidden", name : "request", value : "GetObjectPlus")
+
+                input (type : "text", name : "urn", value : demoObject, size: "60")
+
+                input (type : "submit", value : "Get object")
+            }
+        }
+        footer("@htmlfooter@")
+    }
+}

@@ -1,0 +1,14 @@
+/* Versions of dependencies for sparqlservlet
+*/
+
+
+project.ext {
+    sparqlimgVersion = "0.3.2"
+    sparqlctsVersion = "0.5.8"
+    sparqlccVersion = "0.3.0"
+    graphVersion = "0.3.15"
+
+    groovyVersion = "2.0.6"
+
+    ckVersion  = "0.0.7"
+}

@@ -1,0 +1,131 @@
+
+import org.apache.tools.ant.filters.ReplaceTokens
+
+apply plugin : 'war'
+apply plugin : 'jetty'
+apply plugin : 'groovy'
+
+apply from: "versions.gradle"
+
+// Allow override of links config:
+if (hasProperty('links')) {
+    System.err.print "Using links configuration from ${links}\n"
+    File confFile = new File(links)
+    if (! confFile.exists()) {
+        throw new Exception("No configuration file ${links} found.")
+    }
+    apply from: links
+
+} else {
+    File confFile = new File("links.gradle")
+    if (! confFile.exists()) {
+        throw new Exception("No configuration file ${confFile} found.")
+    }
+    println "Using default configuration in 'links.gradle'"
+    apply from: "links.gradle"
+}
+
+
+// Allow override of basic configuration:
+if (hasProperty('conf')) {
+    System.err.print "Using conf configuration from ${conf}\n"
+    File confFile = new File(conf)
+    if (! confFile.exists()) {
+        throw new Exception("No configuration file ${conf} found.")
+    }
+    apply from: conf
+
+} else {
+    File confFile = new File("conf.gradle")
+    if (! confFile.exists()) {
+        throw new Exception("No configuration file ${confFile} found.")
+    }
+    println "Using default configuration in 'conf.gradle'"
+    apply from: "conf.gradle"
+}
+
+
+
+group = "org.homermultitext"
+version = '0.0.1'
+
+repositories {
+    mavenCentral()
+    maven {
+        url "http://beta.hpcc.uh.edu/nexus/content/repositories/releases"
+    }
+}
+
+configurations {
+    ck {
+        description = "CITEKit configuration"
+        transitive = true
+    }
+}
+
+
+dependencies {
+    groovy  group: 'org.codehaus.groovy', name: 'groovy-all', version: groovyVersion
+
+    compile group : "edu.holycross.shot", name : "sparqlimg", version : sparqlimgVersion
+    runtime group : "edu.holycross.shot", name : "sparqlimg", version : sparqlimgVersion
+
+    compile group : "edu.holycross.shot", name : "sparqlcts", version : sparqlctsVersion
+    runtime group : "edu.holycross.shot", name : "sparqlcts", version : sparqlctsVersion
+
+    compile group : "edu.holycross.shot", name : "sparqlcc", version : sparqlccVersion
+    runtime group : "edu.holycross.shot", name : "sparqlcc", version : sparqlccVersion
+
+    compile group : "edu.holycross.shot", name : "dsegraph", version : graphVersion
+    runtime group : "edu.holycross.shot", name : "dsegraph", version : graphVersion
+
+
+    ck group : "org.homermultitext", name : "citekit", version : ckVersion
+}
+
+// Allow override of basic configuration:
+if (hasProperty('jettyPort')) {
+    System.err.print "Using httpPort configuration from ${conf}\n"
+	httpPort = jettyPort.toInteger()
+} else {
+	httpPort = 8080
+}
+
+// Save headaches by reporting config SqarQL
+println "Using ${sparqls}."
+
+//httpPort = 8080
+stopPort = 9451
+stopKey = 'foo'
+
+task setupCK (type: Copy ) {
+    from  zipTree(configurations.ck.files.asList()[0])
+    into "${buildDir}/tmp/jettyRunWar/webapp/citekit"
+}
+
+
+task squawk {
+    System.err.println "index service is in version ${graphVersion}"
+    System.err.println "collection service is in version ${sparqlccVersion}"
+    System.err.println "image service is in version ${sparqlimgVersion}, linking to ${images}"
+    System.err.println "citekit is in version ${ckVersion}, linking to ${citekit}"
+    System.err.println "Using homeUrl ${homeUrl}"
+
+}
+
+jettyRunWar.dependsOn ([squawk, setupCK])
+
+
+war.dependsOn ([setupCK])
+
+war {
+    filter(ReplaceTokens, tokens: [homeUrl: homeUrl, sparqls: sparqls, iipsrv : iipsrv, demoImage : demoImage, demoObject : demoObject, demoText : demoText, detailWidth: detailWidth, images : images, texts : texts, collections : collections, indices : indices, ict : ict, citekit : citekit, htmlheader : htmlheader, htmlfooter : htmlfooter, htmlnav : htmlnav, projectlabel : projectlabel, queryforms: queryforms, mooxslt: mooxslt])
+
+    from ("${buildDir}/tmp/jettyRunWar/webapp/citekit") {
+        into("citekit")
+    }
+
+
+    classpath sourceSets.main.output.classesDir
+    classpath configurations.runtime
+}

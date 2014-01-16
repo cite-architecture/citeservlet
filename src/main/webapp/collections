@@ -1,0 +1,115 @@
+import edu.holycross.shot.sparqlcc.CiteCollectionSvc
+
+import edu.harvard.chs.cite.CiteUrn
+
+String contentType = "text/xml"
+response.setContentType(contentType)
+response.setHeader( "Access-Control-Allow-Origin", "*")
+
+
+String req = request.getParameter("request")
+String urnStr = request.getParameter("urn")
+
+// guarantee that URN parameter is syntactically valid
+boolean done = false
+CiteUrn urn
+try {
+    urn = new CiteUrn(urnStr)
+} catch (Exception e) {
+    println "<error>${urnStr} is not a valid URN: ${e}</error>\n"
+    done = true
+}
+
+if (!done) {
+    CiteCollectionSvc cc = new CiteCollectionSvc("@sparqls@")
+    switch(req) {
+        case "GetCapabilities":
+            println "<error>${req} request not yet supported.</error>"
+        break
+
+        case "GetPaged":
+            String limit = "20"
+        String offset = "0"
+        
+        if (request.getParameter("offset")) {
+            offset = request.getParameter("offset")
+        }
+        if (request.getParameter("limit")) {
+            offset = request.getParameter("limit")
+        }
+        Integer off = offset as Integer
+        Integer lim = limit as Integer
+        println cc.getPaged(urn, off, lim)
+        break
+
+
+
+
+        case "GetPagedIllustration":
+            String limit = "20"
+        String offset = "0"
+        
+        if (request.getParameter("offset")) {
+            offset = request.getParameter("offset")
+        }
+        if (request.getParameter("limit")) {
+            offset = request.getParameter("limit")
+        }
+
+        Integer off = offset as Integer
+        Integer lim = limit as Integer
+        println cc.getPagedIllustration(urn, off, lim)
+        break
+
+        case "GetObjectPlus":
+            println '<?xml-stylesheet type="text/xsl" href="xslt/cite_object.xsl"?>\n'
+            println cc.getObjectPlusReply(urn)
+        break
+
+        case "GetPrevNextUrn":
+            println '<?xml-stylesheet type="text/xsl" href="xslt/cite_getprevnexturn.xsl"?>\n'
+            println cc.getPrevNextUrnReply(urn)
+        break
+
+        case "GetNext":
+            println '<?xml-stylesheet type="text/xsl" href="xslt/cite_object.xsl"?>\n'
+            println cc.getNextReply(urn)
+        break
+
+        case "GetPrev":
+            println '<?xml-stylesheet type="text/xsl" href="xslt/cite_object.xsl"?>\n'
+            println cc.getPrevReply(urn)
+        break
+
+        case "GetCollectionSize":
+            println '<?xml-stylesheet type="text/xsl" href="xslt/cite_getcollectionsize.xsl"?>\n'
+            println cc.getCollectionSizeReply(urn)
+        break
+
+        case "GetValidReff":
+            println '<?xml-stylesheet type="text/xsl" href="xslt/cite_getvalidreff.xsl"?>\n'
+            println cc.getValidReffReply(urn)
+        break
+
+        case "GetObject":
+            println '<?xml-stylesheet type="text/xsl" href="xslt/cite_object.xsl"?>\n'
+            println cc.getObjectReply(urn)
+        break
+
+        case "GetLast":
+            println cc.getLastReply(urn)
+        break
+
+        case "GetFirst":
+            println cc.getFirstReply(urn)
+        break
+
+        default :
+        // break with "undefined request" excetpion
+            println "<error>Unrecognized request: ${req}.  \n(Add properly name-spaced reply here.)</error>"
+        break
+    }
+}
+
+
+

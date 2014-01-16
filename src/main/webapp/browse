@@ -1,0 +1,245 @@
+/** 
+* Servlet providing paged browsing of a CITE Collection.
+* If collection is ordered, paging is by its ordering property;
+* for unordered collections, paging is by the URN value uniquely
+* identifying each object in the collection.
+*
+* Required parameter:  
+* - urn, giving the URN of the collection to browse.
+*
+* Optional parameters:
+* - limit:  page size (ie, number of objects to retrieve).
+* - offset: where to begin this page in the sequence of the collection.
+*
+*/
+
+import groovyx.net.http.*
+import groovyx.net.http.HttpResponseException
+import static groovyx.net.http.ContentType.*
+import static groovyx.net.http.Method.*
+
+import edu.harvard.chs.cite.CiteUrn
+
+
+String sparql = "@sparqls@"
+String prefix = "prefix cts: <http://www.homermultitext.org/cts/rdf/>\nprefix cite: <http://www.homermultitext.org/cite/rdf/>\nprefix hmt: <http://www.homermultitext.org/hmt/rdf/>\nprefix citedata: <http://www.homermultitext.org/hmt/citedata/>\nprefix dcterms: <http://purl.org/dc/terms/>\nprefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>\nprefix  xsd: <http://www.w3.org/2001/XMLSchema#>\nprefix olo: <http://purl.org/ontology/olo/core#>"
+
+
+
+
+String limit ="9"
+if ((params.limit != null) && (params.limit != ""))  {
+    limit = params.limit
+}
+Integer limitInt = limit as Integer
+
+String offset = "0"
+if ((params.offset != null) && (params.offset != ""))  {
+    offset = params.offset
+}
+Integer offInt = offset as Integer
+
+
+Integer nextOff = offInt + limitInt
+// check if > size of collection ...
+Integer prevOff = offInt - limitInt
+if (prevOff < 0) {
+    prevOff = 0
+}
+Integer block = 3
+
+
+/**
+* Submits an encoded query to the configured SPARQL endpoint,
+* and returns the reply.
+* @param acceptType MIME type to specify for reply.
+* @param query SPARQL query to submit.
+* @returns SPARQL reply, as a String.
+*/
+String getSparqlReply(String acceptType, String query) {
+    String replyString
+    def encodedQuery = URLEncoder.encode(query)
+    def q = "@sparqls@query?query=${encodedQuery}"
+    if (acceptType == "application/json") {
+        q +="&output=json"
+    }
+
+    def http = new HTTPBuilder(q)
+    http.request( Method.GET, ContentType.TEXT ) { req ->
+        headers.Accept = acceptType
+        response.success = { resp, reader ->
+            replyString = reader.text
+        }
+    }
+    return replyString
+}
+
+/** Formulates SPARQL query to retrieve the appropriate page of objects
+* from the collection.
+* @param urn URN of the Collection.
+* @param limit Number of objects to retrieve, as a String value.
+* @param offset Number (as a String) indicating where in the sequence of
+* the Collection to begin the page
+* @param prefix SPARQL prefix statements to prepend to the query.
+* @returns A valid SPARQL query.
+*/
+String getQuery(CiteUrn urn , String limit, String offset, String prefix) {
+    if (limit == "") {
+        limit = "9"
+    }
+    if (offset == "") {
+        offset = "0"
+    }
+
+String reply = """
+${prefix}
+
+select ?obj ?coll ?label where {
+?coll rdf:type cite:CiteCollection .
+?coll rdf:label ?label .
+?obj cite:belongsTo ?coll .
+FILTER (str(?coll) = "${urn}") 
+}
+ORDER BY ?obj
+LIMIT ${limit}
+OFFSET ${offset}
+"""
+return reply
+                }
+
+
+
+String getOrderedQuery(CiteUrn urn , String limit, String offset, String prefix) {
+    if (limit == "") {
+        limit = "9"
+    }
+    if (offset == "") {
+        offset = "0"
+    }
+
+String reply = """
+${prefix}
+select ?obj ?coll ?label where {
+?coll rdf:type cite:CiteCollection .
+?coll rdf:label ?label .
+?obj cite:belongsTo ?coll .
+?obj  <http://purl.org/ontology/olo/core#item> ?seq .
+FILTER (str(?coll) = "${urn}") 
+}
+ORDER BY ?seq
+LIMIT ${limit}
+OFFSET ${offset}
+"""
+return reply
+                }
+
+
+
+
+
+
+
+
+String isOrderedQuery(CiteUrn urn, String prefix) {
+
+return """
+${prefix}
+select ?col (count(?memb) as ?cnt ) where {
+?col          <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.homermultitext.org/cite/rdf/CiteCollection> .
+?memb           <http://www.homermultitext.org/cite/rdf/belongsTo>  ?col .
+?memb <http://purl.org/ontology/olo/core#item> ?num .
+FILTER (str(?col) = "${urn}")
+}
+GROUP BY ?col
+"""
+}
+
+def slurper = new groovy.json.JsonSlurper()
+
+def parsedColls
+def label
+def firstParse
+String queryStr
+
+CiteUrn urn
+try {
+    urn = new CiteUrn(params.urn)
+
+    def orderedParse = slurper.parseText(getSparqlReply("application/json", isOrderedQuery(urn, prefix)))
+    firstParse = orderedParse.results.bindings[0]
+    if (firstParse.cnt.value == "0") {    
+        queryStr = getQuery(urn, limit, offset, prefix)
+    } else {
+        queryStr = getOrderedQuery(urn, limit, offset, prefix)
+    }
+
+    parsedColls = slurper.parseText(getSparqlReply("application/json", queryStr))
+    count = 0 
+    parsedColls.results.bindings.each { b ->
+        if (count == 0) {
+            label = b.label.value
+        }
+        count++
+    }    
+} catch (Exception e) {
+    System.err.println ("citservlet: browse: unable to make URN from ${params.urn}")
+}
+
+
+html.html {
+    head {
+        title("@projectlabel@: browse collection")
+        link(type : "text/css", rel : "stylesheet", href : "css/normalize.css", title : "CSS stylesheet")
+        link(type : "text/css", rel : "stylesheet", href : "css/steely.css", title : "CSS stylesheet")
+        script(type: "text/javascript", src : "js/jquery.min.js", "  ")
+        script(type: "text/javascript", src : "@citekit@", "  ")
+    }
+    
+    body {
+    
+    	header {
+            link(href : "http://folio.furman.edu/images/swiss.css", rel : "stylesheet", type : "text/css")
+    	
+            nav (role : "navigation") {
+                mkp.yield ("CITE services: ")
+                a(href : '@homeUrl@', "Home")
+            }
+            h1("@projectlabel@: browse collection")
+    	}
+    	
+    	article {
+            h2("${label}")
+            p {
+                String prev = "browse?urn=${urn}&limit=${limit}&offset=${prevOff}"
+                a(href : prev, "back") 
+                mkp.yield (" | ")
+                String nxt = "browse?urn=${urn}&limit=${limit}&offset=${nextOff}"
+                a(href : nxt, "forward") 
+
+            }
+
+            Integer total = parsedColls.results.bindings.size()
+            def blockCount = (total / block ) as Integer            
+            for (i in 0..(blockCount)) {
+                div (class : "citekit-compare") {
+                    for (j in 0..(block - 1)) {
+                        def index  = i * block + j
+						if (index < total) {
+								def obj = parsedColls.results.bindings[index]
+								blockquote(class : "cite-collection", cite : "${obj.obj.value}", "${obj.obj.value}")
+						}
+                    }
+                }
+            }
+
+        }
+        // citekit magic:
+        ul (id: "citekit-sources") {
+            li (class : "citekit-source cite-text citekit-default", id : "defaulttext", "@texts@") 
+            li (class : "citekit-source cite-image citekit-default", id : "defaultimage", "data-image-w" : "200",  "@images@" )
+            li (class : "citekit-source cite-collection citekit-default", id : "defaultcollection", "@collections@" )
+        }
+
+        footer("@htmlfooter@")
+    }
+}

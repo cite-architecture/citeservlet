@@ -1,0 +1,43 @@
+/* Configuration for citeservlet
+*/
+
+
+project.ext {
+
+    /* *****************************************  */		    
+    /* Two essential system configuration values  */
+    /* *****************************************  */		    
+    // 1. Sparql endpoint (used by all services)
+    sparqls  = "http://beta.hpcc.uh.edu:3030/ds/"
+
+    // 2. Absolute or relative URL of IIPSrv fast cgi (used by image service)
+    iipsrv = "http://beta.hpcc.uh.edu/fcgi-bin/iipsrv.fcgi"
+	
+
+
+
+    /* *****************************************  */		    
+    /* Project-specific values                    */
+    /* *****************************************  */		    
+    // Where you will install or run citeservlet
+    homeUrl = "http://beta.hpcc.uh.edu/tomcat/hmtcite/"
+
+    // Strings for labelling web pages
+    projectlabel = "Homer Multitext project"
+
+    // Text to inject into header, footer and nav elements
+    htmlnav = "CITE services: <a href='home'>Home</a>"
+    htmlheader = ""
+    htmlfooter = "citeservlet is free software developed by Christopher Blackwell and Neel Smith"
+
+
+    // Default URNs to populate query forms 
+    demoImage = "urn:cite:hmt:vaimg.VA012RN-0013"
+    demoObject = "urn:cite:hmt:msA.12r"
+    demoText = "urn:cts:greekLit:tlg0012.tlg001.msA:1.1"
+
+    // pixel width (as a String) of source image to use in
+    // cutting ICT details. You almost certianly don't care
+    // about this: 9000 is a good default.
+    detailWidth = "9000"
+}

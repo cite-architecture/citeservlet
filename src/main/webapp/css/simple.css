@@ -1,0 +1,124 @@
+/* Set Font-sizes all in one place */
+html {
+  font-family: Verdana, Verdana, Geneva, sans-serif;
+  font-size: 12pt;
+  /* Sets the default size for the page; all other calculations based on this */
+
+}
+body {
+  line-height: 1.25em;
+}
+footer,
+nav {
+  font-size: 75%;
+  line-height: 100%;
+}
+h1 {
+  font-size: 120%;
+}
+h2 {
+  font-size: 100%;
+}
+a#urnLink {
+		font-weight: bold;
+}
+div#main {
+  font-size: 85%;
+}
+/* Nav */
+nav {
+  border: none;
+}
+nav ul {
+  list-style: none;
+}
+nav ul li {
+  display: inline;
+  padding-right: 1em;
+  padding-left: 1em;
+  border-left: 2px solid black;
+}
+nav ul li:nth-child(1) {
+  border-left: none;
+  padding-left: 0em;
+}
+/*  */
+div#main {
+  margin-bottom: 10px;
+}
+.warning {
+  color: red;
+}
+header,
+article,
+footer,
+nav {
+  padding-left: 10px;
+  padding-right: 10px;
+}
+header {
+  border-bottom: 1px solid #800000;
+}
+header,
+footer {
+  /* background-color: @rubricator; */
+
+  padding-top: 5px;
+  padding-bottom: 5px;
+  clear: both;
+}
+footer {
+  clear: both;
+  border-top: 1px solid #800000;
+}
+.navTools {
+  background-color: #f8f8f8;
+  padding: 0.25em;
+}
+header h1,
+header h2,
+header h3,
+header p,
+footer p {
+  color: #800000;
+  margin-top: 5px;
+}
+h1 {
+  color: #800000;
+  margin-top: 10px;
+}
+h2 {
+  margin-top: 5px;
+}
+section,
+nav {
+  margin-top: 5px;
+  margin-bottom: 5px;
+  padding-top: 5px;
+  padding-bottom: 5px;
+  border-bottom: 1px solid #c5c5c5;
+  /* max-width: 35em; */
+
+}
+a {
+  color: #000080;
+  text-decoration: none;
+}
+a:hover {
+  background-color: #dfdfdf;
+}
+.hoover:hover {
+  background-color: #dfdfdf;
+}
+blockquote {
+  /* 
+margin-top: 0.2em;
+	margin-bottom: 0.2em;
+	margin-left: 0.2em;
+ */
+
+}
+
+p,li {
+  margin-bottom: 0.5em;
+}

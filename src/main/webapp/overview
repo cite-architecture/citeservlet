@@ -1,0 +1,219 @@
+
+import groovyx.net.http.*
+import groovyx.net.http.HttpResponseException
+import static groovyx.net.http.ContentType.*
+import static groovyx.net.http.Method.*
+
+String sparql = "@sparqls@"
+String prefix = "prefix cts: <http://www.homermultitext.org/cts/rdf/>\nprefix cite: <http://www.homermultitext.org/cite/rdf/>\nprefix hmt: <http://www.homermultitext.org/hmt/rdf/>\nprefix citedata: <http://www.homermultitext.org/hmt/citedata/>\nprefix dcterms: <http://purl.org/dc/terms/>\nprefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>\nprefix  xsd: <http://www.w3.org/2001/XMLSchema#>\nprefix olo: <http://purl.org/ontology/olo/core#>"
+
+
+
+String getSparqlReply(String acceptType, String query) {
+    String replyString
+    def encodedQuery = URLEncoder.encode(query)
+    def q = "@sparqls@query?query=${encodedQuery}"
+    if (acceptType == "application/json") {
+        q +="&output=json"
+    }
+
+    def http = new HTTPBuilder(q)
+    http.request( Method.GET, ContentType.TEXT ) { req ->
+        headers.Accept = acceptType
+        response.success = { resp, reader ->
+            replyString = reader.text
+        }
+    }
+    return replyString
+}
+
+
+
+/* Labelled counts of CITE Collections */
+String collectionCounts = """
+${prefix}
+SELECT ?coll ?label (count(?obj) AS ?num)  where {
+    ?coll rdf:type cite:CiteCollection  .
+    ?coll rdf:label ?label .
+    ?obj cite:belongsTo ?coll .
+   
+}
+GROUP BY ?coll ?label
+ORDER BY desc(count(?obj))
+
+"""
+
+
+/* Labelled counts of CITE Image Collections */
+String imageCounts = """
+${prefix}
+select ?coll ?label (count(?obj) AS ?num) where {
+    ?coll rdf:type cite:ImageArchive  .
+    ?coll rdf:label ?label .
+    ?obj cite:belongsTo ?coll .
+   
+}
+GROUP BY ?coll ?label
+ORDER BY desc(count(?obj))
+"""
+
+
+/*Edited texts */
+String editions = """
+${prefix}
+select ?label ?ed where {
+    ?ed rdf:type cts:Edition  .
+    ?ed rdf:label ?label .
+}
+"""
+
+/* Translated texts */
+String translations = """
+${prefix}
+select ?label ?trans where {
+    ?trans rdf:type cts:Translation  .
+    ?trans rdf:label ?label .
+}
+"""
+
+
+
+html.html {
+    head {
+        title("@projectlabel@: overview of contents")
+        link(type : "text/css", rel : "stylesheet", href : "css/normalize.css", title : "CSS stylesheet")
+        link(type : "text/css", rel : "stylesheet", href : "css/steely.css", title : "CSS stylesheet")
+    }
+    
+    body {
+    
+    	header {
+            nav (role : "navigation") {
+                mkp.yield "CITE services: "
+                a(href : 'home', "Home")
+            }
+            h1("@projectlabel@: overview of contents")
+    	}
+    	
+    	article {
+            h2("Data collections")
+            p { 
+                def slurper = new groovy.json.JsonSlurper()
+                def parsedColls = slurper.parseText(getSparqlReply("application/json", collectionCounts))
+                boolean hasColls = false
+                if ( parsedColls.results.bindings.size() == 1) {
+                    parsedColls.results.bindings.each { b ->
+                        if (b.num.value == "0") {
+                            mkp.yield("none.")
+                        } else {
+                            hasColls = true
+                        }
+
+                    }
+                    
+                } else {
+                    hasColls = true
+                }
+
+                if (hasColls) {
+                    ul {
+                        parsedColls.results.bindings.each { b ->
+                            li {
+                                strong ("${b.label?.value}")
+                                mkp.yield " (${b.coll?.value}): ${b.num?.value} objects ("
+                                a(href : "browse?urn=${b.coll?.value}", "browse")
+                                mkp.yield(")")
+                            }
+                        }
+                    }
+                }
+            }
+
+
+            h2("Image collections")
+            p { 
+                def slurper = new groovy.json.JsonSlurper()
+                def parsedImgs = slurper.parseText(getSparqlReply("application/json", imageCounts))
+		boolean hasImages = false
+
+                if ( parsedImgs.results.bindings.size() == 1) {
+                    parsedImgs.results.bindings.each { b ->
+                        if (b.num.value == "0") {
+                            mkp.yield("none.")
+                        } else {
+                            hasImages = true
+                        }
+
+                    }
+
+                } else {
+                    hasImages = true
+		}
+		if (hasImages) {
+                    ul {
+                        parsedImgs.results.bindings.each { b ->
+                            li {
+                                strong ("${b.label?.value}")
+                                mkp.yield " (${b.coll?.value}): ${b.num?.value} images ("
+                                a(href : "browseimg?urn=${b.coll?.value}", "browse")
+                                mkp.yield(")")
+                                
+                            }
+                        }
+                    }
+                }
+            }
+
+
+
+            h2("Texts")
+            h3("Editions")
+            p { 
+                def slurper = new groovy.json.JsonSlurper()
+                def parsedEdd = slurper.parseText(getSparqlReply("application/json", editions))
+
+                if ( parsedEdd.results.bindings.size() == 0) {
+                    mkp.yield ("none.")
+                } else {
+
+                    ul {
+                        parsedEdd.results.bindings.each { b ->
+                            li {
+                                strong ("${b.label?.value}")
+                                mkp.yield (": see ")
+                                a (href: "@texts@?request=GetValidReff&level=1&urn=${b.ed?.value}" , "contents")
+                            }
+                        }
+                    }
+                }
+            }
+
+
+
+
+            h3("Translations")
+            p { 
+                def slurper = new groovy.json.JsonSlurper()
+                def parsedTrans = slurper.parseText(getSparqlReply("application/json", translations))
+
+
+                if ( parsedTrans.results.bindings.size() == 0) {
+                    mkp.yield ("none.")
+                } else {
+
+                    ul {
+                        parsedTrans.results.bindings.each { b ->
+                            li {
+                                strong ("${b.label?.value}")
+                                mkp.yield (": see ")
+                                a (href: "@texts@?request=GetValidReff&level=1&urn=${b.trans?.value}" , "contents")
+                            }
+                        }
+                    }
+                }
+            }
+
+        }
+        footer("@htmlfooter@")
+    }
+}

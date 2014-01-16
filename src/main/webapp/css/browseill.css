@@ -1,0 +1,27 @@
+body {
+    background-color : black;
+    color : white;
+}
+
+header {
+    background-color : white;
+    color : black
+}
+
+div.thumbnail {
+float : left;
+padding : 0.2em;
+background-color : inherit;
+}
+
+p.caption {
+font-size : 60%;
+}
+
+
+
+
+footer {
+    clear : both;
+}
+

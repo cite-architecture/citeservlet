@@ -1,0 +1,176 @@
+import groovyx.net.http.*
+import groovyx.net.http.HttpResponseException
+import static groovyx.net.http.ContentType.*
+import static groovyx.net.http.Method.*
+
+import edu.harvard.chs.cite.CiteUrn
+
+
+String sparql = "@sparqls@"
+String images = "@images@"
+String prefix = "prefix cts: <http://www.homermultitext.org/cts/rdf/>\nprefix cite: <http://www.homermultitext.org/cite/rdf/>\nprefix hmt: <http://www.homermultitext.org/hmt/rdf/>\nprefix citedata: <http://www.homermultitext.org/hmt/citedata/>\nprefix dcterms: <http://purl.org/dc/terms/>\nprefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>\nprefix  xsd: <http://www.w3.org/2001/XMLSchema#>\nprefix olo: <http://purl.org/ontology/olo/core#>"
+
+
+
+
+String limit ="9"
+if ((params.limit != null) && (params.limit != ""))  {
+    limit = params.limit
+}
+Integer limitInt = limit as Integer
+
+String offset = "0"
+if ((params.offset != null) && (params.offset != ""))  {
+    offset = params.offset
+}
+Integer offInt = offset as Integer
+
+
+Integer nextOff = offInt + limitInt
+// check if > size of collection ...
+Integer prevOff = offInt - limitInt
+if (prevOff < 0) {
+    prevOff = 0
+}
+Integer block = 3
+
+
+
+String getSparqlReply(String acceptType, String query) {
+    String replyString
+    def encodedQuery = URLEncoder.encode(query)
+    def q = "@sparqls@query?query=${encodedQuery}"
+    if (acceptType == "application/json") {
+        q +="&output=json"
+    }
+
+    def http = new HTTPBuilder(q)
+    http.request( Method.GET, ContentType.TEXT ) { req ->
+        headers.Accept = acceptType
+        response.success = { resp, reader ->
+            replyString = reader.text
+        }
+    }
+    return replyString
+}
+
+
+String getQuery(CiteUrn urn , String limit, String offset, prefix) {
+    if (limit == "") {
+        limit = "9"
+    }
+    if (offset == "") {
+        offset = "0"
+    }
+
+String reply = """
+${prefix}
+
+select ?obj ?coll ?label where {
+?coll rdf:type cite:ImageArchive .
+?coll rdf:label ?label .
+?obj cite:belongsTo ?coll .
+FILTER (str(?coll) = "${urn}") 
+}
+ORDER BY ?obj
+LIMIT ${limit}
+OFFSET ${offset}
+"""
+return reply
+                }
+
+
+
+def slurper = new groovy.json.JsonSlurper()
+def parsedColls
+def label
+String queryStr
+
+CiteUrn urn
+try {
+    urn = new CiteUrn(params.urn)
+    queryStr = getQuery(urn, limit, offset, prefix)
+    parsedColls = slurper.parseText(getSparqlReply("application/json", queryStr))
+    count = 0 
+    parsedColls.results.bindings.each { b ->
+        if (count == 0) {
+            label = b.label.value
+        }
+        count++
+    }    
+} catch (Exception e) {
+    System.err.println ("citservlet: browseimg: unable to make URN from ${params.urn}")
+}
+
+
+html.html {
+    head {
+        title("@projectlabel@: browse image collection")
+        link(type : "text/css", rel : "stylesheet", href : "css/normalize.css", title : "CSS stylesheet")
+        link(type : "text/css", rel : "stylesheet", href : "css/steely.css", title : "CSS stylesheet")
+    }
+    
+    body {
+    
+			header {
+			script(type: "text/javascript", src : "js/jquery.min.js", "  ")
+            script(type: "text/javascript", src : "@citekit@", "")
+            link(href : "http://folio.furman.edu/images/swiss.css", rel : "stylesheet", type : "text/css")
+    	
+            nav (role : "navigation") {
+                mkp.yield "CITE services: "
+                a(href : 'home', "Home")
+            }
+            h1("@projectlabel@: browse image collection")
+    	}
+    	
+    	article {
+            h2("${label}")
+            p {
+                String prev = "browseimg?urn=${urn}&limit=${limit}&offset=${prevOff}"
+                a(href : prev, "back") 
+                mkp.yield (" | ")
+                String nxt = "browseimg?urn=${urn}&limit=${limit}&offset=${nextOff}"
+                a(href : nxt, "forward") 
+
+            }
+
+            Integer total = parsedColls.results.bindings.size()
+			if ( total < 5){
+					for (i in 0..(total - 1)){
+						def index = i	
+						def obj = parsedColls.results.bindings[index]
+						blockquote(class : "cite-image", cite : "${obj.obj.value}", "URN ${obj.obj.value}")
+					}
+			} else {
+					def blockCount = (total / block ) as Integer            
+					for (i in 0..(blockCount - 1)) {
+						div (class : "citecompare") {
+							for (j in 0..(block - 1)) {
+								def index  = i * block + j
+								def obj = parsedColls.results.bindings[index]
+								/*blockquote {
+
+									a (href : "${images}?request=GetIIPMooViewer&urn=${obj.obj.value}") {
+										img(src : "${images}?request=GetBinaryImage&urn=${obj.obj.value}", width : "80")
+									}
+
+								}*/
+								blockquote(class : "cite-image", cite : "${obj.obj.value}", "URN ${obj.obj.value}")
+
+							}
+						}
+					}
+			}
+
+        }
+        // citekit magic:
+        ul (id: "citekit-sources") {
+            li (class : "citekit-source cite-text citekit-default", id : "defaulttext", "@texts@") 
+            li (class : "citekit-source cite-image citekit-default", "data-image-w" : "300", id : "defaultimage", "@images@" )
+            li (class : "citekit-source cite-collection citekit-default", id : "defaultcollection", "@collections@" )
+            li(class : "citekit-additional-source cite-collection", id : "localcoll", "collections?request=GetObjectPlus&urn=")
+        }
+        footer("@htmlfooter@")
+    }
+}

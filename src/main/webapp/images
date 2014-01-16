@@ -1,0 +1,72 @@
+import edu.holycross.shot.sparqlimg.CiteImage
+
+import edu.harvard.chs.cite.CiteUrn
+
+String contentType = "text/xml"
+response.setContentType(contentType)
+response.setHeader( "Access-Control-Allow-Origin", "*")
+
+
+String req = request.getParameter("request")
+String urnStr = request.getParameter("urn")
+
+// guarantee that URN parameter is syntactically valid
+boolean done = false
+CiteUrn urn
+try {
+    urn = new CiteUrn(urnStr)
+} catch (Exception e) {
+    println "<error>${urnStr} is not a valid URN: ${e}</error>\n"
+    done = true
+}
+
+if (!done) {
+    CiteImage chsi = new CiteImage("@sparqls@", "@iipsrv@")
+    switch(req) {
+        case "GetCaption":
+            println  '<?xml-stylesheet type="text/xsl" href="xslt/citeimg_getcaption.xsl"?>\n' +  chsi.getCaptionReply(urn)
+        break
+
+        case "GetRights":
+            println  '<?xml-stylesheet type="text/xsl" href="xslt/citeimg_getrights.xsl"?>\n' + chsi.getRightsReply(urn)
+        break
+
+
+        case "GetIIPMooViewer":
+
+        //    println  '<?xml-stylesheet type="text/xsl" href="xslt/citeimg_getiipmooviewer.xsl"?>\n' +  chsi.getIIPMooViewerReply(urn)
+            println  '<?xml-stylesheet type="text/xsl" href="@mooxslt@"?>\n' +  chsi.getIIPMooViewerReply(urn)
+        break
+
+        case "GetImagePlus":
+            println  '<?xml-stylesheet type="text/xsl" href="xslt/citeimg_getimageplus.xsl"?>\n' + chsi.getImagePlusReply(urn, "@images@?")
+        break
+
+
+        // add handling for 'w' param
+        case "GetBinaryImage":
+            String subRef = urn.getExtendedRef()
+            def w = 800
+            String reqW = request.getParameter("w")
+            try  {
+                w = reqW.toInteger()
+            } catch (Exception) {
+                // stick with default
+            }
+            CiteUrn queryUrn= new CiteUrn ("urn:cite:${urn.getNs()}:${urn.getCollection()}.${urn.getObjectId()}")
+            String redirectAddress = chsi.getBinaryRedirect(queryUrn) + "&RGN=${subRef}&WID=${w}&CVT=JPEG"
+            System.err.println "REDIREDT TO ${redirectAddress}"
+            response.sendRedirect(redirectAddress)
+            break
+
+
+
+        default :
+        // break with "undefined request" excetpion
+            println "<error>Unrecognized request: ${req}.  \n(Add properly name-spaced reply here.)</error>"
+        break
+    }
+}
+
+
+
