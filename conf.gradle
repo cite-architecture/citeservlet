@@ -12,8 +12,10 @@ project.ext {
 
     // 2. Absolute or relative URL of IIPSrv fast cgi (used by image service)
     iipsrv = "http://beta.hpcc.uh.edu/fcgi-bin/iipsrv.fcgi"
-	
-
+    
+    // Optional specification of a directory with a TextInventory
+    // if you are running CTS locally (from the "texts" servlet):
+    inventoryDir = ""	
 
 
     /* *****************************************  */		    
