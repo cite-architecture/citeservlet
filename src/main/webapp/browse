@@ -189,8 +189,8 @@ try {
 html.html {
     head {
         title("@projectlabel@: browse collection")
-        link(type : "text/css", rel : "stylesheet", href : "css/normalize.css", title : "CSS stylesheet")
-        link(type : "text/css", rel : "stylesheet", href : "css/steely.css", title : "CSS stylesheet")
+        link(type : "text/css", rel : "stylesheet", href : "css/browsers.css", title : "CSS stylesheet")
+        link(type : "text/css", rel : "stylesheet", href : "css/hmt-core.css", title : "CSS stylesheet")
         script(type: "text/javascript", src : "js/jquery.min.js", "  ")
         script(type: "text/javascript", src : "@citekit@", "  ")
     }
@@ -198,7 +198,6 @@ html.html {
     body {
     
     	header {
-            link(href : "http://folio.furman.edu/images/swiss.css", rel : "stylesheet", type : "text/css")
     	
             nav (role : "navigation") {
                 mkp.yield ("CITE services: ")

@@ -201,13 +201,10 @@ try {
 html.html {
     head {
         title("@projectlabel@: browse illustrated collection")
-        // Kept getting interference across style sheets so commented these
-        // out for now ...
-        //        link(type : "text/css", rel : "stylesheet", href : "css/normalize.css", title : "CSS stylesheet")
-        //        link(type : "text/css", rel : "stylesheet", href : "css/steely.css", title : "CSS stylesheet")
+        link(type : "text/css", rel : "stylesheet", href : "css/browsers.css", title : "CSS stylesheet")
+        link(type : "text/css", rel : "stylesheet", href : "css/hmt-core.css", title : "CSS stylesheet")
         
 
-        link(type : "text/css", rel : "stylesheet", href : "css/browseill.css", title : "CSS for thumbnail image display")
     }
     
     body {
@@ -223,7 +220,7 @@ html.html {
     	
     	article {
             h2("${label}")
-            p {
+            p (class: "nav") {
                 String prev = "browseill?urn=${urn}&limit=${limit}&offset=${prevOff}"
                 a(href : prev, "back") 
                 mkp.yield (" | ")
@@ -248,6 +245,14 @@ html.html {
             }
 
         }
+            p (class: "nav") {
+                String prev = "browseill?urn=${urn}&limit=${limit}&offset=${prevOff}"
+                a(href : prev, "back") 
+                mkp.yield (" | ")
+                String nxt = "browseill?urn=${urn}&limit=${limit}&offset=${nextOff}"
+                a(href : nxt, "forward") 
+
+            }
 
         footer("@htmlfooter@")
     }

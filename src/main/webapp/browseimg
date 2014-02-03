@@ -106,8 +106,8 @@ try {
 html.html {
     head {
         title("@projectlabel@: browse image collection")
-        link(type : "text/css", rel : "stylesheet", href : "css/normalize.css", title : "CSS stylesheet")
-        link(type : "text/css", rel : "stylesheet", href : "css/steely.css", title : "CSS stylesheet")
+        link(type : "text/css", rel : "stylesheet", href : "css/browsers.css", title : "CSS stylesheet")
+        link(type : "text/css", rel : "stylesheet", href : "css/hmt-core.css", title : "CSS stylesheet")
     }
     
     body {
@@ -115,7 +115,6 @@ html.html {
 			header {
 			script(type: "text/javascript", src : "js/jquery.min.js", "  ")
             script(type: "text/javascript", src : "@citekit@", "")
-            link(href : "http://folio.furman.edu/images/swiss.css", rel : "stylesheet", type : "text/css")
     	
             nav (role : "navigation") {
                 mkp.yield "CITE services: "
@@ -126,7 +125,7 @@ html.html {
     	
     	article {
             h2("${label}")
-            p {
+            p (class: "nav") {
                 String prev = "browseimg?urn=${urn}&limit=${limit}&offset=${prevOff}"
                 a(href : prev, "back") 
                 mkp.yield (" | ")
@@ -145,7 +144,7 @@ html.html {
 			} else {
 					def blockCount = (total / block ) as Integer            
 					for (i in 0..(blockCount - 1)) {
-						div (class : "citecompare") {
+						div (class : "citekit-compare") {
 							for (j in 0..(block - 1)) {
 								def index  = i * block + j
 								def obj = parsedColls.results.bindings[index]
@@ -171,6 +170,14 @@ html.html {
             li (class : "citekit-source cite-collection citekit-default", id : "defaultcollection", "@collections@" )
             li(class : "citekit-additional-source cite-collection", id : "localcoll", "collections?request=GetObjectPlus&urn=")
         }
+            p (class: "nav") {
+                String prev = "browseimg?urn=${urn}&limit=${limit}&offset=${prevOff}"
+                a(href : prev, "back") 
+                mkp.yield (" | ")
+                String nxt = "browseimg?urn=${urn}&limit=${limit}&offset=${nextOff}"
+                a(href : nxt, "forward") 
+
+            }
         footer("@htmlfooter@")
     }
 }

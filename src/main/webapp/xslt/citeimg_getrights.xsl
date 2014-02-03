@@ -11,20 +11,10 @@
             <head>
                 <meta charset="utf-8" />
                 <title>CITE Image · <xsl:value-of select="//citeimg:request/citeimg:urn"/></title>
-                <link href="css/normalize.css"
-                    rel="stylesheet"
-                    title="CSS for CTS"
-                    type="text/css"/>
-                
-                <link
-                    href="css/main.css"
-                    rel="stylesheet"
-                    title="CSS for CTS"
-                    type="text/css"/>
                 
                 
                 <link
-                    href="css/steely.css"
+                    href="css/hmt-core.css"
                     rel="stylesheet"
                     title="CSS for CTS"
                     type="text/css"/>

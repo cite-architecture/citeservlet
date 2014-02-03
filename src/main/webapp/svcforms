@@ -17,8 +17,7 @@ def imgReply = slurper.parseText(svcReply)
 html.html {
     head {
         title("@projectlabel@: lookup by URN")
-		link(type : "text/css", rel : "stylesheet", href : "css/normalize.css", title : "CSS stylesheet")
-		link(type : "text/css", rel : "stylesheet", href : "css/steely.css", title : "CSS stylesheet")
+		link(type : "text/css", rel : "stylesheet", href : "css/hmt-core.css", title : "CSS stylesheet")
     }
     
     body {

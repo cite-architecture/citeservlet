@@ -81,8 +81,7 @@ select ?label ?trans where {
 html.html {
     head {
         title("@projectlabel@: overview of contents")
-        link(type : "text/css", rel : "stylesheet", href : "css/normalize.css", title : "CSS stylesheet")
-        link(type : "text/css", rel : "stylesheet", href : "css/steely.css", title : "CSS stylesheet")
+        link(type : "text/css", rel : "stylesheet", href : "css/hmt-core.css", title : "CSS stylesheet")
     }
     
     body {

@@ -24,17 +24,6 @@
 		<html>
 			<head>
 				
-				<link href="css/normalize.css"
-				rel="stylesheet"
-				title="CSS for CTS"
-				type="text/css"/>
-		
-			<link
-						href="css/main.css"
-					rel="stylesheet"
-					title="CSS for CTS"
-					type="text/css"/>
-				
 				<link
 						href="css/graph.css"
 					rel="stylesheet"
@@ -46,7 +35,7 @@
 			        title="CSS for CTS"
 			        type="text/css"/>
 			<link
-						href="css/steely.css"
+						href="css/hmt-core.css"
 					rel="stylesheet"
 					title="CSS for CTS"
 					type="text/css"/>

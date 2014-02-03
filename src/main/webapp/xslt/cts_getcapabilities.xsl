@@ -13,20 +13,9 @@
         <html>
             <head>
                 
-                <link href="css/normalize.css"
-                    rel="stylesheet"
-                    title="CSS for CTS"
-                    type="text/css"/>
                 
                 <link
-                    href="css/main.css"
-                    rel="stylesheet"
-                    title="CSS for CTS"
-                    type="text/css"/>
-                
-                
-                <link
-                    href="css/steely.css"
+                    href="css/hmt-core.css"
                     rel="stylesheet"
                     title="CSS for CTS"
                     type="text/css"/>
@@ -134,10 +123,12 @@
         </li>
     </xsl:template>
     
-
+    <xsl:template match="ti:groupname">
+        <xsl:value-of select="."/><xsl:text> </xsl:text>
+    </xsl:template>
 
     <xsl:template match="ti:title">
-        <xsl:apply-templates/>
+        <xsl:value-of select="."/><xsl:text> </xsl:text>
     </xsl:template>
     
     <xsl:template match="@*|node()" priority="-1">
