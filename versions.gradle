@@ -10,5 +10,5 @@ project.ext {
 
     groovyVersion = "2.0.6"
 
-    ckVersion  = "0.0.7"
+    ckVersion  = "0.1.4"
 }

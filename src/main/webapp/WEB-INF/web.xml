@@ -28,6 +28,15 @@
         <url-pattern>/browse</url-pattern>
     </servlet-mapping>
 
+    <servlet-mapping>
+        <servlet-name>GroovyServlet</servlet-name>
+        <url-pattern>/msscholia</url-pattern>
+    </servlet-mapping>
+
+    <servlet-mapping>
+        <servlet-name>GroovyServlet</servlet-name>
+        <url-pattern>/scholia</url-pattern>
+    </servlet-mapping>
 
     <servlet-mapping>
         <servlet-name>GroovyServlet</servlet-name>
