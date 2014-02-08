@@ -93,6 +93,8 @@ select ?edCites ?edPic ?scholia ?scholPic where {
 
 optional {
 ?edCites cite:illustratedBy ?edPic .
+}
+optional {
 ?scholia cite:illustratedBy ?scholPic .
 }
 
@@ -158,7 +160,7 @@ html.html {
                     } else {
                             blockquote(class: "cite-text", cite : "${b.scholia.value}", "${b.scholia.value}")
                     }
-                    if (b?.scholPic){
+                    if (b?.scholPic?.value){
                             blockquote(class: "cite-image", cite : "${b?.scholPic?.value}", "${b?.scholPic?.value}")
                     }
                 }
@@ -167,7 +169,7 @@ html.html {
         // citekit magic:
         ul (id: "citekit-sources") {
                 li (class : "citekit-source cite-text citekit-default", id : "defaulttext", "@texts@") 
-                li (class : "citekit-source cite-image citekit-default", id : "defaultimage", "data-image-w" : "800",  "@images@" )
+                li (class : "citekit-source cite-image citekit-default", id : "defaultimage", "data-image-w" : "2000",  "@images@" )
                 li (class : "citekit-source cite-collection citekit-default", id : "defaultcollection", "@collections@" )
         }
 }

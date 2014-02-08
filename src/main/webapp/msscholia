@@ -89,6 +89,8 @@ select ?scholion ?scholPic where {
                 return reply
 }
 
+if (!done){
+
 String queryString;
 queryString = illustrationQuery(urnStr, prefix);
 textIllustrations = slurper.parseText(getSparqlReply("application/json", queryString))
@@ -117,27 +119,33 @@ html.html {
                 article {
 
         blockquote(class : "cite-text", cite : "${urnStr}", "${urnStr}")
-        textIllustrations.results.bindings.each { b ->
+        textIllustrations?.results?.bindings?.each { b ->
                 blockquote(class: "cite-image", cite : "${b.picture.value}", "${b.picture.value}")
         }    
 
-    h2("${scholiaFound.results.bindings.size()} Scholia")
+    h2("${scholiaFound?.results?.bindings?.size()} Scholia")
 
     scholiaFound.results.bindings.each { b ->
         div (class : "citekit-compare") {
-            blockquote(class: "cite-text", cite : "${b.scholion.value}", "${b.scholion.value}")
-            blockquote(class: "cite-image", cite : "${b.scholPic.value}", "${b.scholPic.value}")
+                    if (b?.scholion?.value.substring(4,8) == 'cite'){
+                            blockquote(class: "cite-collection", cite : "${b.scholion.value}", "${b.scholion.value}")
+                    } else {
+                            blockquote(class: "cite-text", cite : "${b.scholion.value}", "${b.scholion.value}")
+                    }
+            //blockquote(class: "cite-text", cite : "${b.scholion.value}", "${b.scholion.value}")
+            if (b?.scholPic){
+                    blockquote(class: "cite-image", cite : "${b.scholPic.value}", "${b.scholPic.value}")
+            }
         }
     }    
                 }
 // citekit magic:
 ul (id: "citekit-sources") {
         li (class : "citekit-source cite-text citekit-default", id : "defaulttext", "@texts@") 
-        li (class : "citekit-source cite-image citekit-default", id : "defaultimage", "data-image-w" : "800",  "@images@" )
+        li (class : "citekit-source cite-image citekit-default", id : "defaultimage", "data-image-w" : "2000",  "@images@" )
         li (class : "citekit-source cite-collection citekit-default", id : "defaultcollection", "@collections@" )
 }
                 footer("@htmlfooter@")
         }
 }
-
-
+}

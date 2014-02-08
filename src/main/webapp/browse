@@ -27,7 +27,7 @@ String prefix = "prefix cts: <http://www.homermultitext.org/cts/rdf/>\nprefix ci
 
 
 
-String limit ="9"
+String limit ="18"
 if ((params.limit != null) && (params.limit != ""))  {
     limit = params.limit
 }
