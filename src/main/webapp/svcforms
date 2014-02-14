@@ -90,6 +90,17 @@ html.html {
 
                 input (type : "submit", value : "Get object")
             }
+
+            h2("Scholia Reader")
+            p("Read scholia on manuscripts…")
+
+	    p("an image:")
+            form (action : "scholia", method : "get") {
+
+                input (type : "text", name : "urn", value : demoText, size: "60")
+
+                input (type : "submit", value : "View Scholia")
+            }
         }
         footer("@htmlfooter@")
     }
