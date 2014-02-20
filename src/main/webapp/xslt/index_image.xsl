@@ -57,7 +57,7 @@
             <head>
                 <meta charset="utf-8"/>
                 <title>CITE Index</title>
-                <link href="css/hmt-core.css" rel="stylesheet"/>
+                <link href="@coreCss@" rel="stylesheet"/>
                 <link href="css/graph.css" rel="stylesheet"/>
                 
                 <script src="js/jquery.min.js"/>

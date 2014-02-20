@@ -35,7 +35,7 @@
 			        title="CSS for CTS"
 			        type="text/css"/>
 			<link
-						href="css/hmt-core.css"
+						href="@coreCss@"
 					rel="stylesheet"
 					title="CSS for CTS"
 					type="text/css"/>

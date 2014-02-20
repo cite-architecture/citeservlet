@@ -26,7 +26,7 @@
                 <meta charset="utf-8"/>
                 <title>CITE Index</title>
                 <link href="css/graph.css" rel="stylesheet"/>
-                <link href="css/hmt-core.css" rel="stylesheet"/>
+                <link href="@coreCss@" rel="stylesheet"/>
                 <script type="text/javascript">
 				            function toggleThis(seqId){
 				             $("#" + seqId).toggle("slow");

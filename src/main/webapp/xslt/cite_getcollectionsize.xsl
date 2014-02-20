@@ -22,7 +22,7 @@
             <head>
                 <title>Size of Collection: <xsl:value-of select="//cite:urn"/></title>
                 <meta charset="utf-8"></meta>
-                <link rel="stylesheet" href="css/hmt-core.css"></link>
+                <link rel="stylesheet" href="@coreCss@"></link>
                 <link rel="stylesheet" href="css/graph.css"></link>
                 <link rel="stylesheet" href="css/cite_common.css"></link>
             </head>

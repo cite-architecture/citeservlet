@@ -107,7 +107,7 @@ html.html {
     head {
         title("@projectlabel@: browse image collection")
         link(type : "text/css", rel : "stylesheet", href : "css/browsers.css", title : "CSS stylesheet")
-        link(type : "text/css", rel : "stylesheet", href : "css/hmt-core.css", title : "CSS stylesheet")
+        link(type : "text/css", rel : "stylesheet", href : "@coreCss@", title : "CSS stylesheet")
     }
     
     body {
