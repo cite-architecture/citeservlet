@@ -126,11 +126,12 @@ html.html {
 
                 header {
 
-                        nav (role : "navigation") {
-                                mkp.yield ("CITE services: ")
-                                a(href : '@homeUrl@', "Home")
-                        }
-                        h2("@projectlabel@: Scholia Reader")
+		  nav {
+		    mkp.yield "@projectlabel@: "
+		    
+		    a(href : '@homeUrl@', "Home")
+		  }
+		  h2("@projectlabel@: Scholia Reader")
                 }
 
                 article {

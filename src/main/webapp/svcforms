@@ -24,8 +24,8 @@ html.html {
     
     	header {
             nav (role : "navigation") {
-                mkp.yield "CITE services: "
-                a(href : 'home', "Home")
+	      mkp.yield "@projectlabel@: "	      
+	      a(href : '@homeUrl@', "Home")
             }
             h1("@projectlabel@: lookup by URN")
     	}
