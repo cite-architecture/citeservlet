@@ -50,10 +50,10 @@
 					<xsl:call-template name="header"/>
 				</header>
 				<nav>
-					<p>
+					<p>  @projectlabel@:
 						<xsl:element name="a">
 							<xsl:attribute name="href"><xsl:value-of select="$homeUrl"/></xsl:attribute>
-							Home
+							home
 						</xsl:element>
 						
 						:
