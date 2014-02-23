@@ -117,8 +117,8 @@ html.html {
             script(type: "text/javascript", src : "@citekit@", "")
     	
             nav (role : "navigation") {
-                mkp.yield "CITE services: "
-                a(href : 'home', "Home")
+                mkp.yield "@projectlabel@: "
+                a(href : '@homeUrl@', "Home")
             }
             h1("@projectlabel@: browse image collection")
     	}
