@@ -27,7 +27,6 @@
 				heightFactor = parseFloat(imgRoi.split(",")[3]);
 				topOffset = parseFloat(imgRoi.split(",")[1]); leftOffset = parseFloat(imgRoi.split(",")[0]);
                 mainViewWidth = Math.floor(1000 / (widthFactor * 1.1) );
-//                mainViewWidth = 9828;
 		} else {
 				widthFactor = 1; heightFactor = 1;
 				topOffset = 0; leftOffset = 0;
@@ -35,8 +34,6 @@
 		}
 
 	// Populate image fields
-    console.log("wf = " + widthFactor);
-    console.log("calc = " + mainViewWidth);
 	$("img.jcrop-preview").attr("src",imgSvcURL+"request=GetBinaryImage&urn="+paramURN+"&w="+detailWidth);
 	$("img#target").attr("src",imgSvcURL+"request=GetBinaryImage&urn="+paramURN+"&w="+mainViewWidth);
 
