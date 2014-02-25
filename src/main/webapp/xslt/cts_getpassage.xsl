@@ -35,7 +35,7 @@
 			        title="CSS for CTS"
 			        type="text/css"/>
 			<link
-						href="css/hmt-core.css"
+						href="@coreCss@"
 					rel="stylesheet"
 					title="CSS for CTS"
 					type="text/css"/>
@@ -66,17 +66,16 @@
 			        <xsl:call-template name="header"/>
 			    </header>
 				<nav>
-					<p>
+					<p>  @projectlabel@:
 						<xsl:element name="a">
 						    <xsl:attribute name="href"><xsl:value-of select="$homeUrl"/></xsl:attribute>
-						        Home
+						        home
 						</xsl:element>
 						   
-						:
-					    <xsl:element name="a">
-						    <xsl:attribute name="href"><xsl:value-of select="$formsUrl"/></xsl:attribute>
-						            Look up material by URN
-					    </xsl:element>
+						<!--<xsl:element name="a">
+							<xsl:attribute name="href"><xsl:value-of select="$formsUrl"/></xsl:attribute>
+							Look up material by URN
+						</xsl:element>-->
 						    
 						
 					</p>

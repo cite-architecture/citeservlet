@@ -117,7 +117,7 @@ html.html {
         head {
                 title("@projectlabel@: Scholia Reader")
                         link(type : "text/css", rel : "stylesheet", href : "css/browsers.css", title : "CSS stylesheet")
-                        link(type : "text/css", rel : "stylesheet", href : "css/hmt-core.css", title : "CSS stylesheet")
+                        link(type : "text/css", rel : "stylesheet", href : "@coreCss@", title : "CSS stylesheet")
                         script(type: "text/javascript", src : "js/jquery.min.js", "  ")
                         script(type: "text/javascript", src : "@citekit@", "  ")
         }
@@ -126,11 +126,12 @@ html.html {
 
                 header {
 
-                        nav (role : "navigation") {
-                                mkp.yield ("CITE services: ")
-                                a(href : '@homeUrl@', "Home")
-                        }
-                        h2("@projectlabel@: Scholia Reader")
+		  nav {
+		    mkp.yield "@projectlabel@: "
+		    
+		    a(href : '@homeUrl@', "Home")
+		  }
+		  h2("@projectlabel@: Scholia Reader")
                 }
 
                 article {

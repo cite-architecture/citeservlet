@@ -17,6 +17,8 @@ project.ext {
     // if you are running CTS locally (from the "texts" servlet):
     inventoryDir = ""	
 
+    coreCss = "css/hmt-core.css"
+
 
     /* *****************************************  */		    
     /* Project-specific values                    */

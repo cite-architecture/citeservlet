@@ -202,7 +202,7 @@ html.html {
     head {
         title("@projectlabel@: browse illustrated collection")
         link(type : "text/css", rel : "stylesheet", href : "css/browsers.css", title : "CSS stylesheet")
-        link(type : "text/css", rel : "stylesheet", href : "css/hmt-core.css", title : "CSS stylesheet")
+        link(type : "text/css", rel : "stylesheet", href : "@coreCss@", title : "CSS stylesheet")
         
 
     }
@@ -212,8 +212,8 @@ html.html {
     	header {
     	
             nav (role : "navigation") {
-                mkp.yield "CITE services: "
-                a(href : 'home', "Home")
+                mkp.yield "@projectlabel@: "
+                a(href : '@homeUrl@', "home")
             }
             h1("@projectlabel@: browse collection")
     	}

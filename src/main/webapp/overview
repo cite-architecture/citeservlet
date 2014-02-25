@@ -81,15 +81,15 @@ select ?label ?trans where {
 html.html {
     head {
         title("@projectlabel@: overview of contents")
-        link(type : "text/css", rel : "stylesheet", href : "css/hmt-core.css", title : "CSS stylesheet")
+        link(type : "text/css", rel : "stylesheet", href : "@coreCss@", title : "CSS stylesheet")
     }
     
     body {
     
     	header {
             nav (role : "navigation") {
-                mkp.yield "CITE services: "
-                a(href : 'home', "Home")
+                mkp.yield "@projectlabel@: "
+                a(href : '@homeUrl@', "Home")
             }
             h1("@projectlabel@: overview of contents")
     	}

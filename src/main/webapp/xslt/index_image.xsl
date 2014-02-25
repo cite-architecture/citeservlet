@@ -57,7 +57,7 @@
             <head>
                 <meta charset="utf-8"/>
                 <title>CITE Index</title>
-                <link href="css/hmt-core.css" rel="stylesheet"/>
+                <link href="@coreCss@" rel="stylesheet"/>
                 <link href="css/graph.css" rel="stylesheet"/>
                 
                 <script src="js/jquery.min.js"/>
@@ -89,17 +89,16 @@
                     <xsl:call-template name="header"/>
                 </header>
                 <nav>
-                    <p>
+                    <p>@projectlabel@:
                         <xsl:element name="a">
                             <xsl:attribute name="href"><xsl:value-of select="$homeUrl"/></xsl:attribute>
-                            Home
+                            home
                         </xsl:element>
                         
-                        :
-                        <xsl:element name="a">
-                            <xsl:attribute name="href"><xsl:value-of select="$formsUrl"/></xsl:attribute>
-                            Look up material by URN
-                        </xsl:element>
+                        <!--<xsl:element name="a">
+							<xsl:attribute name="href"><xsl:value-of select="$formsUrl"/></xsl:attribute>
+							Look up material by URN
+						</xsl:element>-->
                         
                         
                     </p>

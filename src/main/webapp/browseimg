@@ -107,7 +107,7 @@ html.html {
     head {
         title("@projectlabel@: browse image collection")
         link(type : "text/css", rel : "stylesheet", href : "css/browsers.css", title : "CSS stylesheet")
-        link(type : "text/css", rel : "stylesheet", href : "css/hmt-core.css", title : "CSS stylesheet")
+        link(type : "text/css", rel : "stylesheet", href : "@coreCss@", title : "CSS stylesheet")
     }
     
     body {
@@ -117,8 +117,8 @@ html.html {
             script(type: "text/javascript", src : "@citekit@", "")
     	
             nav (role : "navigation") {
-                mkp.yield "CITE services: "
-                a(href : 'home', "Home")
+                mkp.yield "@projectlabel@: "
+                a(href : '@homeUrl@', "Home")
             }
             h1("@projectlabel@: browse image collection")
     	}

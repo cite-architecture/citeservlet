@@ -22,7 +22,7 @@
             <head>
                 <title><xsl:value-of select="//cite:citeObject/@urn"/></title>
                 <meta charset="utf-8"></meta>
-                <link rel="stylesheet" href="css/hmt-core.css"></link>
+                <link rel="stylesheet" href="@coreCss@"></link>
                 <link rel="stylesheet" href="css/graph.css"></link>
                 <script type="text/javascript" src="js/jquery.min.js"> </script>
                 <script type="text/javascript" src="@citekit@"> </script>
@@ -32,17 +32,17 @@
                     <xsl:call-template name="header"/>
                 </header>
                 <nav>
-                    <p>
+                    <p>@projectlabel@:
                         <xsl:element name="a">
                             <xsl:attribute name="href"><xsl:value-of select="$homeUrl"/></xsl:attribute>
-                            Home
+                            home
                         </xsl:element>
                         
                         :
-                        <xsl:element name="a">
-                            <xsl:attribute name="href"><xsl:value-of select="$formsUrl"/></xsl:attribute>
-                            Look up material by URN
-                        </xsl:element>
+                        <!--<xsl:element name="a">
+							<xsl:attribute name="href"><xsl:value-of select="$formsUrl"/></xsl:attribute>
+							Look up material by URN
+						</xsl:element>-->
                         
                         
                     </p>
