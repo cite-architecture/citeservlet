@@ -32,10 +32,7 @@
     <!-- Variables for RDF verbs, etc. -->
     <xsl:variable name="illustratesVerb">http://www.homermultitext.org/cite/rdf/illustrates</xsl:variable>
     
-    <!-- Variables for URLs of services, images, etc. -->
-   <!-- <xsl:variable name="imgURL">http://beta.hpcc.uh.edu/tomcat/hmt/images</xsl:variable>
-    <xsl:variable name="ictURL">http://localhost:8080/citeservlet/ict.html?urn=</xsl:variable>
-    <xsl:variable name="thisURL">http://localhost:8080/citeservlet/indices</xsl:variable>-->
+    
     
     
     <xsl:variable name="imageThumbURL"><xsl:value-of select="$imgURL"
@@ -80,7 +77,7 @@
                 <xsl:element name="script">
                     <xsl:attribute name="type">text/javascript</xsl:attribute>
                    <xsl:attribute name="src">@citekit@</xsl:attribute>
-                    <!--<xsl:attribute name="src">http://localhost/citekit/js/cite-jq.js</xsl:attribute>-->
+                 
                  </xsl:element>
                
             </head>
@@ -231,11 +228,7 @@
           </xsl:attribute>
           <xsl:attribute name="id"><xsl:value-of select="$thisSeqId"/></xsl:attribute>
           
-          <!--<xsl:element name="blockquote">
-             <xsl:attribute name="cite"><xsl:value-of select="@urn"/></xsl:attribute>
-              <xsl:attribute name="class">cite-cts svc-graph-cts</xsl:attribute>
-          <strong><xsl:value-of select="@urn"/></strong>
-          </xsl:element>-->
+         
           
           <xsl:apply-templates select="citeindex:value/citeindex:node" mode="visinv-text">
               <xsl:with-param name="seqId"><xsl:value-of select="$thisSeqId"/></xsl:with-param>
@@ -327,26 +320,7 @@
          </xsl:if>
     </xsl:template>
     
-   <!-- <xsl:template match="citeindex:node" mode="object">
-        <xsl:variable name="thisId"><xsl:value-of select="generate-id(.)"/></xsl:variable>
-        <div class="toggler">
-            <xsl:element name="a">
-                <xsl:attribute name="onclick">toggleThis("<xsl:value-of select="$thisId"/>")</xsl:attribute>
-                Show/Hide
-            </xsl:element>
-            <p class="long-text">Non-textual data mapped to this image</p>
-            <xsl:element name="div">
-                <xsl:attribute name="id"><xsl:value-of select="$thisId"/></xsl:attribute>
-                <xsl:element name="blockquote">
-                    <xsl:attribute name="cite"><xsl:value-of select="citeindex:value"/></xsl:attribute>
-                    <xsl:attribute name="class">cite-collection defaultobject</xsl:attribute>
-                    Label: <xsl:value-of select="citeindex:label"/><br/>
-                    Value: <xsl:value-of select="citeindex:value"/>
-                </xsl:element>
-            </xsl:element>
-        </div>
-    </xsl:template>-->
-    
+   
     <xsl:template match="citeindex:node" mode="show">
         <div>
         
@@ -360,21 +334,7 @@
             <li class="citekit-source cite-image citekit-default" data-image-w="900" id="defaultimage">@images@</li>
             <li class="citekit-source cite-collection citekit-default" id="defaultobject">@collections@</li>
         </ul>
-        <!--
-        <div id="citekit-additional-sources">
-            <p class="citekit-additional-source cite-cts" id="svc-graph-cts"
-                >@texts@?request=GetPassagePlus&amp;urn=</p>
-            <p class="citekit-additional-source cite-img" id="svc-graph-img"
-                >@images@?request=GetImagePlus&amp;urn=</p>
-            <p class="citekit-additional-source cite-coll" id="svc-graph-coll">@collections@?request=GetObjectPlus&amp;urn=</p>
-        </div> -->
-        <!--<div id="citekit-additional-sources">
-            <p class="citekit-additional-source cite-cts" id="svc-graph-cts"
-                >http://localhost:8080/citeservlet/texts?request=GetPassagePlus&amp;urn=</p>
-            <p class="citekit-additional-source cite-img" id="svc-graph-img"
-                >http://beta.hpcc.uh.edu/tomcat/hmt/images?request=GetImagePlus&amp;urn=</p>
-            <p class="citekit-additional-source cite-coll" id="svc-graph-coll">http://localhost:8080/citeservlet/collections?request=GetObjectPlus&amp;urn=</p>
-        </div>-->
+        
     </xsl:template>
     
     
