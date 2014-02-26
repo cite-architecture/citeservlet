@@ -117,20 +117,14 @@ task setupCK (type: Copy ) {
     into "${buildDir}/tmp/jettyRunWar/webapp/citekit"
 }
 
-task printProps << {
-    println "Customized dir = " + customDir
-    println "x = " + x
-    
-}
-
 task squawk {
-    System.err.println "Using sparql end point ${sparqls}."	
+    System.err.println "\nUsing sparql end point ${sparqls}."	
     System.err.println "Using homeUrl ${homeUrl}"
     System.err.println "index service is in version ${graphVersion}"
     System.err.println "collection service is in version ${sparqlccVersion}"
     System.err.println "image service is in version ${sparqlimgVersion}, linking to ${images}"
     System.err.println "citekit is in version ${ckVersion}, linking to ${citekit}"
-    System.err.println "Will add customizations from ${customDir}"
+    System.err.println "Will add customizations from ${customDir}\n"
 }
 
 jettyRunWar.dependsOn ([squawk, setupCK])
