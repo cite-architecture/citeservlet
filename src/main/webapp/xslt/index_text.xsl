@@ -36,7 +36,7 @@
                 <xsl:element name="script">
                     <xsl:attribute name="type">text/javascript</xsl:attribute>
                     <xsl:attribute name="src">@citekit@</xsl:attribute>
-                    <!--<xsl:attribute name="src">http://localhost/citekit/js/cite-jq.js</xsl:attribute>-->
+                 
                 </xsl:element>
             </head>
             <body>
@@ -50,10 +50,7 @@
                             home
                         </xsl:element>
                         
-                        <!--<xsl:element name="a">
-							<xsl:attribute name="href"><xsl:value-of select="$formsUrl"/></xsl:attribute>
-							Look up material by URN
-						</xsl:element>-->
+                   
                         
                         
                     </p>
