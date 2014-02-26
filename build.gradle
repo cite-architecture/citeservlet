@@ -47,7 +47,7 @@ if (hasProperty('conf')) {
 
 
 group = "org.homermultitext"
-version = '0.0.1'
+version = '0.1.0'
 
 repositories {
     mavenCentral()
@@ -76,8 +76,8 @@ dependencies {
     compile group : "edu.holycross.shot", name : "sparqlcc", version : sparqlccVersion
     runtime group : "edu.holycross.shot", name : "sparqlcc", version : sparqlccVersion
 
-    compile group : "edu.holycross.shot", name : "dsegraph", version : graphVersion
-    runtime group : "edu.holycross.shot", name : "dsegraph", version : graphVersion
+    compile group : "edu.holycross.shot", name : "citegraph", version : graphVersion
+    runtime group : "edu.holycross.shot", name : "citegraph", version : graphVersion
 
 
     ck group : "org.homermultitext", name : "citekit", version : ckVersion
@@ -91,8 +91,8 @@ if (hasProperty('jettyPort')) {
 	httpPort = 8080
 }
 
-// Save headaches by reporting config SqarQL
-println "Using ${sparqls}."
+
+
 
 //httpPort = 8080
 stopPort = 9451
@@ -105,12 +105,12 @@ task setupCK (type: Copy ) {
 
 
 task squawk {
+    System.err.println "Using sparql end point ${sparqls}."	
+    System.err.println "Using homeUrl ${homeUrl}"
     System.err.println "index service is in version ${graphVersion}"
     System.err.println "collection service is in version ${sparqlccVersion}"
     System.err.println "image service is in version ${sparqlimgVersion}, linking to ${images}"
     System.err.println "citekit is in version ${ckVersion}, linking to ${citekit}"
-    System.err.println "Using homeUrl ${homeUrl}"
-
 }
 
 jettyRunWar.dependsOn ([squawk, setupCK])
