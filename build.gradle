@@ -128,6 +128,11 @@ war {
     from ("${inventoryDir}") {
       into ("invs")
     }
+    
+    from ("customize") {
+      exclude "README.md"
+    }
+
 
     classpath sourceSets.main.output.classesDir
     classpath configurations.runtime
