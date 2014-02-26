@@ -54,7 +54,7 @@ body {
   font-weight: 300;
   padding: 0.5em;
   background-color: #fff;
-  padding: 1em; }
+  padding: 2em; }
 
 header, footer {
   font-family: Helvetica, sans-serif;
@@ -136,7 +136,7 @@ strong {
   font-weight: 900; }
 
 a {
-  color: navy;
+  color: #0000b3;
   text-decoration: none; }
 
 a:hover {
