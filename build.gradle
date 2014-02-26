@@ -129,7 +129,7 @@ war {
       into ("invs")
     }
     
-    from ("customize") {
+    from ("${customDir}") {
       exclude "README.md"
     }
 

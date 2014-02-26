@@ -44,4 +44,7 @@ project.ext {
     // cutting ICT details. You almost certianly don't care
     // about this: 9000 is a good default.
     detailWidth = "9000"
+
+    // Directory with local customizations of citeservlet:
+    customDir = "customize"
 }
