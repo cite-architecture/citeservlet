@@ -40,6 +40,11 @@ project.ext {
     demoObject = "urn:cite:hmt:msA.12r"
     demoText = "urn:cts:greekLit:tlg0012.tlg001.msA:1.1"
 
+
+    // Default number of units of surrounding context,
+    // as a String, to use with CTS GetPassage* requests
+    defaultContext = "0"
+
     // pixel width (as a String) for citekit display
     // of images.
     ckImgSize = "1000"

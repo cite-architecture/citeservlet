@@ -3,13 +3,12 @@ import edu.holycross.shot.sparqlcts.CtsDefinitions
 
 import edu.harvard.chs.cite.CtsUrn
 
-String contentType = "text/xml"
-response.setContentType(contentType)
-response.setCharacterEncoding('UTF-8')
-response.setHeader( "Access-Control-Allow-Origin", "*")
+
 
 
 boolean done = false
+String defaultContextString = "@defaultContext@"
+Integer context = defaultContextString.toInteger()
 
 String getCapsReply() {
     String inv = "inventory.xml"
@@ -47,7 +46,7 @@ if (req == "GetCapabilities") {
     }
 }
 
-Integer context = 0
+
 if (request.getParameter("context")) {
     String contextStr = request.getParameter("context")
     try {
@@ -58,6 +57,10 @@ if (request.getParameter("context")) {
 }
 
 if (!done) {
+  response.setContentType("text/xml")
+  response.setCharacterEncoding('UTF-8')
+  response.setHeader( "Access-Control-Allow-Origin", "*")
+
     CtsGraph ctsg = new CtsGraph("@sparqls@")
     switch(req) {
         case "GetDescription":
