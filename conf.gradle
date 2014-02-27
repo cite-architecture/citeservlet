@@ -40,6 +40,10 @@ project.ext {
     demoObject = "urn:cite:hmt:msA.12r"
     demoText = "urn:cts:greekLit:tlg0012.tlg001.msA:1.1"
 
+    // pixel width (as a String) for citekit display
+    // of images.
+    ckImgSize = "1000"
+
     // pixel width (as a String) of source image to use in
     // cutting ICT details. You almost certianly don't care
     // about this: 9000 is a good default.
