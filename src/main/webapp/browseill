@@ -72,14 +72,8 @@ String getSparqlReply(String acceptType, String query) {
         q +="&output=json"
     }
 
-    def http = new HTTPBuilder(q)
-    http.request( Method.GET, ContentType.TEXT ) { req ->
-        headers.Accept = acceptType
-        response.success = { resp, reader ->
-            replyString = reader.text
-        }
-    }
-    return replyString
+        URL queryUrl = new URL(q)
+        return queryUrl.getText("UTF-8")
 }
 
 /** Formulates SPARQL query to retrieve the appropriate page of objects
