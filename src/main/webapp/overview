@@ -4,6 +4,9 @@ import groovyx.net.http.HttpResponseException
 import static groovyx.net.http.ContentType.*
 import static groovyx.net.http.Method.*
 
+
+
+
 String sparql = "@sparqls@"
 String prefix = "prefix cts: <http://www.homermultitext.org/cts/rdf/>\nprefix cite: <http://www.homermultitext.org/cite/rdf/>\nprefix hmt: <http://www.homermultitext.org/hmt/rdf/>\nprefix citedata: <http://www.homermultitext.org/hmt/citedata/>\nprefix dcterms: <http://purl.org/dc/terms/>\nprefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>\nprefix  xsd: <http://www.w3.org/2001/XMLSchema#>\nprefix olo: <http://purl.org/ontology/olo/core#>"
 
@@ -17,14 +20,9 @@ String getSparqlReply(String acceptType, String query) {
         q +="&output=json"
     }
 
-    def http = new HTTPBuilder(q)
-    http.request( Method.GET, ContentType.TEXT ) { req ->
-        headers.Accept = acceptType
-        response.success = { resp, reader ->
-            replyString = reader.text
-        }
-    }
-    return replyString
+        URL queryUrl = new URL(q)
+        return queryUrl.getText("UTF-8")
+
 }
 
 

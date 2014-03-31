@@ -3,9 +3,9 @@
 
 
 project.ext {
-    sparqlimgVersion = "0.3.2"
-    sparqlctsVersion = "0.6.1"
-    sparqlccVersion = "0.3.0"
+    sparqlimgVersion = "0.3.3"
+    sparqlctsVersion = "0.6.2"
+    sparqlccVersion = "0.3.1"
     graphVersion = "0.5.0"
 
     groovyVersion = "2.0.6"
