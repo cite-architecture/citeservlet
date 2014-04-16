@@ -24,10 +24,10 @@ project.ext {
     /* Project-specific values                    */
     /* *****************************************  */		    
     // Where you will install or run citeservlet
-    homeUrl = "http://beta.hpcc.uh.edu/tomcat/hmtcite/"
+    homeUrl = "http://localhost:8080/citeservlet/"
 
     // Strings for labelling web pages
-    projectlabel = "Homer Multitext project"
+    projectlabel = "CITE servlet"
 
     // Text to inject into header, footer and nav elements
     htmlnav = "CITE services: <a href='home'>Home</a>"
@@ -36,9 +36,9 @@ project.ext {
 
 
     // Default URNs to populate query forms 
-    demoImage = "urn:cite:hmt:vaimg.VA012RN-0013"
-    demoObject = "urn:cite:hmt:msA.12r"
-    demoText = "urn:cts:greekLit:tlg0012.tlg001.msA:1.1"
+    demoImage = ""
+    demoObject = ""
+    demoText = ""
 
 
     // Default number of units of surrounding context,

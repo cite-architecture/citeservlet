@@ -79,22 +79,21 @@ configurations {
 
 
 dependencies {
-    groovy  group: 'org.codehaus.groovy', name: 'groovy-all', version: groovyVersion
+  compile  group: 'org.codehaus.groovy', name: 'groovy-all', version: groovyVersion
 
-    compile group : "edu.holycross.shot", name : "sparqlimg", version : sparqlimgVersion
-    runtime group : "edu.holycross.shot", name : "sparqlimg", version : sparqlimgVersion
+  compile group : "edu.holycross.shot", name : "sparqlimg", version : sparqlimgVersion
+  runtime group : "edu.holycross.shot", name : "sparqlimg", version : sparqlimgVersion
 
-    compile group : "edu.holycross.shot", name : "sparqlcts", version : sparqlctsVersion
-    runtime group : "edu.holycross.shot", name : "sparqlcts", version : sparqlctsVersion
+  compile group : "edu.holycross.shot", name : "sparqlcts", version : sparqlctsVersion
+  runtime group : "edu.holycross.shot", name : "sparqlcts", version : sparqlctsVersion
 
-    compile group : "edu.holycross.shot", name : "sparqlcc", version : sparqlccVersion
-    runtime group : "edu.holycross.shot", name : "sparqlcc", version : sparqlccVersion
+  compile group : "edu.holycross.shot", name : "sparqlcc", version : sparqlccVersion
+  runtime group : "edu.holycross.shot", name : "sparqlcc", version : sparqlccVersion
 
-    compile group : "edu.holycross.shot", name : "citegraph", version : graphVersion
-    runtime group : "edu.holycross.shot", name : "citegraph", version : graphVersion
+  compile group : "edu.holycross.shot", name : "citegraph", version : graphVersion
+  runtime group : "edu.holycross.shot", name : "citegraph", version : graphVersion
 
-
-    ck group : "org.homermultitext", name : "citekit", version : ckVersion
+  ck group : "org.homermultitext", name : "citekit", version : ckVersion
 }
 
 // Allow override of basic configuration:

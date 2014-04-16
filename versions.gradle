@@ -1,4 +1,4 @@
-/* Versions of dependencies for sparqlservlet
+/* Versions of dependencies for citeservlet
 */
 
 
@@ -8,7 +8,7 @@ project.ext {
     sparqlccVersion = "0.3.1"
     graphVersion = "0.5.0"
 
-    groovyVersion = "2.0.6"
+    groovyVersion = "2.2.2"
 
-    ckVersion  = "0.1.6"
+    ckVersion  = "0.1.7"
 }
