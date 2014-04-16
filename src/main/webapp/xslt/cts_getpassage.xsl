@@ -47,9 +47,9 @@
 					</xsl:when>
 					<xsl:otherwise>
 						<title><xsl:value-of
-							select="//cts:reply/cts:description/cts:groupname"/>, <xsl:value-of
-								select="//cts:reply/cts:description/cts:title"/> (<xsl:value-of
-									select="//cts:reply/cts:description/cts:label"/>): 
+							select="//cts:reply/cts:label/cts:groupname"/>, <xsl:value-of
+							    select="//cts:reply/cts:label/cts:title"/> (<xsl:value-of
+							        select="//cts:reply/cts:label/cts:version"/>): 
 							<xsl:call-template name="urnPsg">
 								<xsl:with-param name="urnStr">
 									<xsl:value-of select="$urnString"/>
@@ -91,11 +91,11 @@
 						</xsl:when>
 						<xsl:otherwise>
 							<h1><xsl:value-of
-										select="//cts:reply/cts:description/cts:groupname"/>, <em>
+							    select="//cts:reply/cts:label/cts:groupname"/>, <em>
 											<xsl:value-of
-												select="//cts:reply/cts:description/cts:title"/>
+											    select="//cts:reply/cts:label/cts:title"/>
 										</em> (<xsl:value-of
-											select="//cts:reply/cts:description/cts:label"/>):
+										    select="//cts:reply/cts:label/cts:version"/>):
 								<xsl:call-template name="urnPsg">
 									<xsl:with-param name="urnStr">
 										<xsl:value-of select="$urnString"/>
