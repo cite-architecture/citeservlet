@@ -1,49 +1,22 @@
-
 import org.apache.tools.ant.filters.ReplaceTokens
 
 apply plugin : 'war'
 apply plugin : 'jetty'
 apply plugin : 'groovy'
-apply plugin : 'maven'
 
 
 apply from: "versions.gradle"
 
 
 
-if (hasProperty('pub')) {
-    System.err.print "Using configuration data from ${pub}"
-    File confFile = new File(pub)
-    if (! confFile.exists()) {
-        throw new Exception("No publication configuration file ${pub} found.")
-    } else {
-        apply from: pub
-    }
-
-} else {
-    File confFile = new File("pub.gradle")
-    if (! confFile.exists()) {
-        throw new Exception("No publication configuration file ${confFile} found\
-.")
-    } else {
-        println "Using default configuration in 'pub.gradle'"
-        apply from: "pub.gradle"
-    }
-}
-
-
-
+// For dynamic configuration of a project's "overlay" directory:
 if (hasProperty('custom')) {
-  println "BEFORE configuration, custom is " + custom
-
   project.ext {	  
     customDir = custom
   }
 }
 
-
-
-// Allow override of links config:
+// For dynamic configuration of configured links:
 if (hasProperty('links')) {
     System.err.print "Using links configuration from ${links}\n"
     File confFile = new File(links)
@@ -62,7 +35,8 @@ if (hasProperty('links')) {
 }
 
 
-// Allow override of basic configuration:
+
+// For dynamic configuration of basic configuration:
 if (hasProperty('conf')) {
     System.err.print "Using conf configuration from ${conf}\n"
     File confFile = new File(conf)
@@ -80,11 +54,6 @@ if (hasProperty('conf')) {
     apply from: "conf.gradle"
 }
 
-if (!hasProperty('customDir')) {
-  project.ext {
-    customDir = custom
-  }
-}
 
 group = "org.homermultitext"
 version = '0.9.0'
@@ -122,49 +91,42 @@ dependencies {
   ck group : "org.homermultitext", name : "citekit", version : ckVersion
 }
 
-// Allow override of basic configuration:
+// Allow override of jetty port for jettyRunWar
 if (hasProperty('jettyPort')) {
-    System.err.print "Using httpPort configuration from ${conf}\n"
-	httpPort = jettyPort.toInteger()
+  System.err.print "Using httpPort configuration from ${conf}\n"
+  httpPort = jettyPort.toInteger()
 } else {
-	httpPort = 8080
+  httpPort = 8080
 }
 
-
-
-
-//httpPort = 8080
 stopPort = 9451
 stopKey = 'foo'
 
 task setupCK (type: Copy ) {
-    from  zipTree(configurations.ck.files.asList()[0])
-    into "${buildDir}/tmp/jettyRunWar/webapp/citekit"
+  description="Copies citekit files into build area."
+  from  zipTree(configurations.ck.files.asList()[0])
+  into "${buildDir}/tmp/jettyRunWar/webapp/citekit"
 }
-
-task cssimgs (type: Copy ) {
-    from  "css-imgs"
-    into "${buildDir}/tmp/jettyRunWar/webapp/css/imgs"
-}
-
 
 task squawk {
-    System.err.println "\nUsing sparql end point ${sparqls}."	
-    System.err.println "Using homeUrl ${homeUrl}"
-    System.err.println "index service is in version ${graphVersion}"
-    System.err.println "collection service is in version ${sparqlccVersion}"
-    System.err.println "image service is in version ${sparqlimgVersion}, linking to ${images}"
-    System.err.println "citekit is in version ${ckVersion}, linking to ${citekit}"
-    System.err.println "Will add customizations from ${customDir}\n"
+  description="Shows system configuration for jettyRunWar"
+  System.err.println "\nUsing sparql end point ${sparqls}."	
+  System.err.println "Using homeUrl ${homeUrl}"
+  System.err.println "index service is in version ${graphVersion}"
+  System.err.println "collection service is in version ${sparqlccVersion}"
+  System.err.println "image service is in version ${sparqlimgVersion}, linking to ${images}"
+  System.err.println "citekit is in version ${ckVersion}, linking to ${citekit}"
+  System.err.println "Will add customizations from ${customDir}\n"
 }
 
-jettyRunWar.dependsOn ([squawk, setupCK, cssimgs])
+jettyRunWar.dependsOn ([squawk, setupCK])
 
 
-war.dependsOn ([setupCK, cssimgs])
+war.dependsOn ([setupCK])
 
 war {
-  filter(ReplaceTokens, 
+  from("src/main/filtered") {
+    filter(ReplaceTokens, 
 	  tokens: 
 	  [
 	    homeUrl: homeUrl, 
@@ -196,49 +158,58 @@ war {
 	   graphVersion: graphVersion, 
 	   ckVersion: ckVersion
 	  ]
-	 )
-
-    from ("${buildDir}/tmp/jettyRunWar/webapp/citekit") {
-        into("citekit")
-    }
-
-    from ("${inventoryDir}") {
-      into ("invs")
-    }
-    
-    from ("${customDir}") {
-      exclude "README.md"
-    }
-
-    classpath sourceSets.main.output.classesDir
-    classpath configurations.runtime
-}
-
-
-
-
-uploadArchives {
-    repositories.mavenDeployer {
-        repository(url: nexusRepo) {                   
-            authentication (userName: nexusUser, password: nexusPassword)
-        }
-    }
-}
-
-
-/*
-artifacts {
-  lib jar
-}
-
-uploadLib {
-  repositories.mavenDeployer {
-    repository(url: nexusRepo) {                   
-      authentication (userName: nexusUser, password: nexusPassword)
-    }
+	  )
   }
-  doLast {
-    System.err.println "Code library uploaded."
+
+  from ("${customDir}") {
+    filter(ReplaceTokens, 
+	  tokens: 
+	  [
+	    homeUrl: homeUrl, 
+	   sparqls: sparqls, 
+	   iipsrv : iipsrv, 
+	   demoImage : demoImage, 
+	   demoObject : demoObject, 
+	   demoText : demoText, 
+	   detailWidth: detailWidth, 
+	   images : images, 
+	   texts : texts, 
+	   collections : collections, 
+	   indices : indices, 
+	   ict : ict, 
+	   citekit : citekit, 
+	   htmlheader : htmlheader, 
+	   htmlfooter : htmlfooter, 
+	   htmlnav : htmlnav, 
+	   projectlabel : projectlabel, 
+	   queryforms: queryforms, 
+	   mooxslt: mooxslt, 
+	   coreCss: coreCss, 
+	   ckImgSize: ckImgSize, 
+	   defaultContext: defaultContext, 
+	   csversion: version, 
+	   sparqlimgVersion: sparqlimgVersion, 
+	   sparqlctsVersion: sparqlctsVersion, 
+	   sparqlccVersion: sparqlccVersion, 
+	   graphVersion: graphVersion, 
+	   ckVersion: ckVersion
+	  ]
+	  )
+    exclude "README.md"
   }
+
+  from ("${buildDir}/tmp/jettyRunWar/webapp/citekit") {
+    into("citekit")
+  }
+
+  from ("${inventoryDir}") {
+    into ("invs")
+  }
+
+  from ("css-imgs") {
+    into ("css/imgs")
+  }
+
+  classpath sourceSets.main.output.classesDir
+  classpath configurations.runtime
 }
-*/
