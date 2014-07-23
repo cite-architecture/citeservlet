@@ -116,6 +116,12 @@ task setupCK (type: Copy ) {
     into "${buildDir}/tmp/jettyRunWar/webapp/citekit"
 }
 
+task cssimgs (type: Copy ) {
+    from  "css-imgs"
+    into "${buildDir}/tmp/jettyRunWar/webapp/css/imgs"
+}
+
+
 task squawk {
     System.err.println "\nUsing sparql end point ${sparqls}."	
     System.err.println "Using homeUrl ${homeUrl}"
@@ -126,10 +132,10 @@ task squawk {
     System.err.println "Will add customizations from ${customDir}\n"
 }
 
-jettyRunWar.dependsOn ([squawk, setupCK])
+jettyRunWar.dependsOn ([squawk, setupCK, cssimgs])
 
 
-war.dependsOn ([setupCK])
+war.dependsOn ([setupCK, cssimgs])
 
 war {
   filter(ReplaceTokens, 
@@ -177,7 +183,6 @@ war {
     from ("${customDir}") {
       exclude "README.md"
     }
-
 
     classpath sourceSets.main.output.classesDir
     classpath configurations.runtime
