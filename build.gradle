@@ -4,9 +4,7 @@ apply plugin : 'war'
 apply plugin : 'jetty'
 apply plugin : 'groovy'
 
-
 apply from: "versions.gradle"
-
 
 
 // For dynamic configuration of a project's "overlay" directory:
@@ -14,7 +12,12 @@ if (hasProperty('custom')) {
   project.ext {	  
     customDir = custom
   }
+} else {
+  project.ext {
+    customDir = "customize"
+  }
 }
+
 
 // For dynamic configuration of configured links:
 if (hasProperty('links')) {
