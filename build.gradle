@@ -164,6 +164,45 @@ war {
 	  )
   }
 
+  from ("${buildDir}/tmp/jettyRunWar/webapp/citekit") {
+
+    filter(ReplaceTokens, 
+	  tokens: 
+	  [
+	    homeUrl: homeUrl, 
+	   sparqls: sparqls, 
+	   iipsrv : iipsrv, 
+	   demoImage : demoImage, 
+	   demoObject : demoObject, 
+	   demoText : demoText, 
+	   detailWidth: detailWidth, 
+	   images : images, 
+	   texts : texts, 
+	   collections : collections, 
+	   indices : indices, 
+	   ict : ict, 
+	   citekit : citekit, 
+	   htmlheader : htmlheader, 
+	   htmlfooter : htmlfooter, 
+	   htmlnav : htmlnav, 
+	   projectlabel : projectlabel, 
+	   queryforms: queryforms, 
+	   mooxslt: mooxslt, 
+	   coreCss: coreCss, 
+	   ckImgSize: ckImgSize, 
+	   defaultContext: defaultContext, 
+	   csversion: version, 
+	   sparqlimgVersion: sparqlimgVersion, 
+	   sparqlctsVersion: sparqlctsVersion, 
+	   sparqlccVersion: sparqlccVersion, 
+	   graphVersion: graphVersion, 
+	   ckVersion: ckVersion
+	  ]
+	  )
+
+    into("citekit")
+  }
+
   from ("${customDir}") {
     filter(ReplaceTokens, 
 	  tokens: 
@@ -201,9 +240,6 @@ war {
     exclude "README.md"
   }
 
-  from ("${buildDir}/tmp/jettyRunWar/webapp/citekit") {
-    into("citekit")
-  }
 
   from ("${inventoryDir}") {
     into ("invs")
