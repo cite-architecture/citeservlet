@@ -5,7 +5,7 @@ The CITE services suite implemented using a SPARQL endpoint for source data
 
 ## Requirements ##
 
-- a running SPARQL endpoint with your data
+- a running version 1.1 SPARQL endpoint with your data loaded
 - gradle: <http://www.gradle.org/>
 
 
