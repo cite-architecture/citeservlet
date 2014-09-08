@@ -7,17 +7,6 @@ apply plugin : 'groovy'
 apply from: "versions.gradle"
 
 
-// For dynamic configuration of a project's "overlay" directory:
-if (hasProperty('custom')) {
-  project.ext {	  
-    customDir = custom
-  }
-} else {
-  project.ext {
-    customDir = "customize"
-  }
-}
-
 
 // For dynamic configuration of configured links:
 if (hasProperty('links')) {
@@ -55,6 +44,19 @@ if (hasProperty('conf')) {
     }
     println "Using default configuration in 'conf.gradle'"
     apply from: "conf.gradle"
+}
+
+// For dynamic configuration of a project's "overlay" directory:
+if (hasProperty('custom')) {
+    println "Has custom: ${custom}"
+  project.ext {	  
+    customDir = custom
+  }
+} else {
+    println "Has no custom directory"
+  project.ext {
+    customDir = "customize"
+  }
 }
 
 
