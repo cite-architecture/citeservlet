@@ -1,0 +1,32 @@
+# Dependencies
+markdown:         redcarpet
+pygments:         true
+
+# Permalinks
+permalink:        pretty
+
+# Setup
+title:            citeservlet
+tagline:          'The CITE services suite'
+description:      'The complete CITE services suite implemented using a SPARQL endpoint for source data'
+baseurl: '/citeservlet/'
+
+
+author:
+  name:           'Neel Smith'
+ 
+
+paginate:         5
+
+github:
+  repo:           https://github.com/neelsmith/cite
+
+
+links:
+  - title: Github project
+    url: https://github.com/cite-architecture/citeservlet
+    external: true
+  - title: CITE architecture home page
+    url: http://cite-architecture.github.io/
+    external: true
+   
