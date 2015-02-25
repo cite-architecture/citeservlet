@@ -3,6 +3,10 @@
     xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
     <!-- This stylesheet includes templates for handling all TEI elements used in CHS diplomatic editions. -->
     
+    <xsl:template match="tei:body">
+        <xsl:apply-templates/>
+    </xsl:template>
+    
     <xsl:template match="tei:add">
         <span class="tei_add">
             <xsl:apply-templates/>
@@ -17,10 +21,7 @@
     </xsl:template>
     
     <xsl:template match="tei:w">
-        <xsl:variable name="punc">,.;·</xsl:variable>
-        
-        <xsl:if test="not(contains($punc,./text()))"><xsl:text> </xsl:text></xsl:if>
-        <span class="tei_w"><xsl:if test="@n"/><span class="tei_w_n"><xsl:value-of select="@n"/></span><xsl:apply-templates/></span>
+        <xsl:apply-templates/><xsl:text> </xsl:text>
     </xsl:template>
     
     <xsl:template match="tei:said">
