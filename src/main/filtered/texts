@@ -21,7 +21,7 @@ String getCapsReply() {
         // temporary kludge:  strip XML PIs, and hope they're isolated on
         // a single line ...
         String capsText = invFile.getText("UTF-8").replaceAll(/<[?].+[?]>/, '')
-        return "<GetCapabilities xmlns:cts='http://chs.harvard.edu/xmlns/cts3'  xmlns='http://chs.harvard.edu/xmlns/cts3'>\n${capsText}\n</GetCapabilities>"
+        return "<GetCapabilities xmlns:cts='http://chs.harvard.edu/xmlns/cts'  xmlns='http://chs.harvard.edu/xmlns/cts'>\n${capsText}\n</GetCapabilities>"
 
     } catch (Exception e) {
         return ("<error>Exception reading inventory file:  ${e}</error>")
@@ -33,6 +33,10 @@ String getCapsReply() {
 String req = request.getParameter("request")
 String urnStr = request.getParameter("urn")
 if (req == "GetCapabilities") {
+  response.setContentType("text/xml")
+  response.setCharacterEncoding('UTF-8')
+  response.setHeader( "Access-Control-Allow-Origin", "*")
+
     println '<?xml-stylesheet type="text/xsl" href="xslt/cts_getcapabilities.xsl"?>\n' + getCapsReply()
     done = true
 
