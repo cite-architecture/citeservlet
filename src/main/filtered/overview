@@ -118,7 +118,7 @@ html.html {
                             li {
                                 strong ("${b.label?.value}")
                                 mkp.yield " (${b.coll?.value}): ${b.num?.value} objects ("
-                                a(href : "browse?urn=${b.coll?.value}", "browse")
+                                a(href : "browse?urn=${b.coll?.value}&offset=0", "browse")
                                 mkp.yield(")")
                             }
                         }
@@ -152,7 +152,7 @@ html.html {
                             li {
                                 strong ("${b.label?.value}")
                                 mkp.yield " (${b.coll?.value}): ${b.num?.value} images ("
-                                a(href : "browseimg?urn=${b.coll?.value}", "browse")
+                                a(href : "browseimg?urn=${b.coll?.value}&offset=0", "browse")
                                 mkp.yield(")")
                                 
                             }
