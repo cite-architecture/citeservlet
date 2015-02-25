@@ -15,7 +15,7 @@
 		<!-- can some of the reply contents in xsl variables
 			for convenient use in different parts of the output -->
 		<xsl:variable name="urnString">
-			<xsl:value-of select="//cts:request/cts:urn"/>
+			<xsl:value-of select="//cts:request/cts:requestUrn"/>
 		</xsl:variable>
 		
 		
@@ -250,6 +250,11 @@
 		</xsl:choose>
 	</xsl:template>
 	
+	
+		
+		
+	
+	
 	<xsl:template name="urnPsg">
 		<xsl:param name="urnStr"/>
 		<xsl:choose>
@@ -265,6 +270,25 @@
 			</xsl:otherwise>
 		</xsl:choose>
 	</xsl:template>
+	
+	<!-- Special!! Identify leaf-nodes -->
+	<xsl:template match="cts:node">
+		<xsl:element name="mark">
+			<xsl:attribute name="class">cts_node</xsl:attribute>
+			<xsl:attribute name="id"><xsl:value-of select="@urn"/></xsl:attribute>
+			<xsl:apply-templates/>
+		</xsl:element>
+		
+		
+	</xsl:template>
+	
+	<xsl:template match="node">
+		<xsl:element name="mark">
+			<xsl:attribute name="class">cts_node</xsl:attribute>
+			<xsl:attribute name="id"><xsl:value-of select="@urn"/></xsl:attribute>
+			<xsl:apply-templates/>
+		</xsl:element>
+	 </xsl:template>
 	
 	<!-- Default: replicate unrecognized markup -->
 	<xsl:template match="@*|node()" priority="-1">
