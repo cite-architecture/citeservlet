@@ -7,7 +7,7 @@
 	defaultURN = "@demoImage@";
 	var imgSvcURL = "images?";
 	var detailWidth = "@detailWidth@";
-	var ictUrl = "@ict@";
+	var ictUrl = "ict.html";
 
 	paramURN = get("urn");
 
